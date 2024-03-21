@@ -26,3 +26,34 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+    - name: Upload .dacpac for deployment job
+      uses: actions/upload-artifact@v4
+      with:
+        name: dacpac
+        path: ./Implementation/Data/RegistryDatabase/bin/Debug/netstandard2.0/RegistryDatabase.dacpac
+
+  deploy: 
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                    
+      - name: download dacpac
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: dacpac
+
+      - name: Azure SQL Deploy
+        uses: Azure/sql-action@v2.1
+        with:
+          connection-string: '${{ secrets.CONNECTION_STRING }}'
+          path: './RegistryDatabase.dacpac'
+          action: publish
+          arguments: '/p:DropObjectsNotInSource=true'
