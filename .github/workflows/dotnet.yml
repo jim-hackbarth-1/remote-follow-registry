@@ -31,7 +31,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: dacpac
-        path: Implementation/Data/RegistryDatabase/bin/Debug/netstandard2.0/RegistryDatabase.dacpac
+        path: Implementation/Data/RegistryDatabase/bin/Debug/netstandard2.0
 
   deploy: 
     needs: build
@@ -47,6 +47,6 @@ jobs:
         uses: Azure/sql-action@v2.1
         with:
           connection-string: '${{ secrets.CONNECTION_STRING }}'
-          path: RegistryDatabase.dacpac
+          path: './RegistryDatabase.dacpac'
           action: publish
           arguments: '/p:DropObjectsNotInSource=true'
