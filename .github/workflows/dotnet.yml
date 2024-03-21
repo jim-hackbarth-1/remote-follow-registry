@@ -26,15 +26,12 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-
-    - name: list files
-      run: ls -a
-      
+ 
     - name: Upload .dacpac for deployment job
       uses: actions/upload-artifact@v4
       with:
         name: dacpac
-        path: ./Implementation/Data/RegistryDatabase/bin/Debug/netstandard2.0/RegistryDatabase.dacpac
+        path: Implementation/Data/RegistryDatabase/bin/Debug/netstandard2.0/RegistryDatabase.dacpac
 
   deploy: 
     needs: build
