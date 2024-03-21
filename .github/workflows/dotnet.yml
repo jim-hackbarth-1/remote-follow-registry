@@ -27,6 +27,9 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
+    - name: list files
+      run: ls -a
+      
     - name: Upload .dacpac for deployment job
       uses: actions/upload-artifact@v4
       with:
