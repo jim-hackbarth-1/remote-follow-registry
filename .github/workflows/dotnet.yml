@@ -47,6 +47,6 @@ jobs:
         uses: Azure/sql-action@v2.1
         with:
           connection-string: '${{ secrets.CONNECTION_STRING }}'
-          path: './RegistryDatabase.dacpac'
+          path: RegistryDatabase.dacpac
           action: publish
           arguments: '/p:DropObjectsNotInSource=true'
